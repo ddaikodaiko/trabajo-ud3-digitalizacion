@@ -1,0 +1,379 @@
+<header class="portada" id="inicio" data-etapa="Inicio">
+  <div class="portada__texto">
+    <p class="portada__ciclo">CFGS Desarrollo de Aplicaciones Multiplataforma. UD3, Computación en la nube</p>
+    <h1>TecnoElectro, rumbo a la nube</h1>
+    <p class="entradilla">Plan para llevar a la nube una empresa de venta y reparación de electrodomésticos con tres tiendas en la Comunidad Valenciana, sin dejar de vender durante el cambio.</p>
+    <p class="equipo">Equipo: <strong>Marcos Ramos</strong>, <strong>Gonzalo Redondo</strong>, <strong>Jaime Ramos</strong> y <strong>Victor Cerveros</strong></p>
+  </div>
+  <aside class="ficha" aria-label="Ficha de la empresa">
+    <p class="ficha__titulo">Ficha técnica <span>TecnoElectro S.L.</span></p>
+    <dl>
+      <div><dt>Sede</dt><dd>Valencia</dd></div>
+      <div><dt>Tiendas</dt><dd>3</dd></div>
+      <div><dt>Personas</dt><dd>22 <small>supuesto</small></dd></div>
+      <div><dt>En tienda</dt><dd>12 <small>supuesto</small></dd></div>
+      <div><dt>Técnicos en ruta</dt><dd>6 <small>supuesto</small></dd></div>
+      <div><dt>Oficina</dt><dd>4 <small>supuesto</small></dd></div>
+    </dl>
+    <p class="ficha__nota">El caso no da plantilla ni presupuesto: estas cifras son supuestos del equipo, marcados así en toda la web.</p>
+  </aside>
+  {{foto:tienda|Cada tienda lleva hoy su propio stock, sin ver el de las otras dos}}
+</header>
+
+<section class="seccion" id="diagnostico" data-etapa="Diagnóstico" data-n="2">
+  <h2>Diagnóstico y modelo de despliegue</h2>
+  <p class="encargo">{{encargo:Marcos Ramos}}</p>
+  <p>Las seis carencias del caso, ordenadas por prioridad. Las dos primeras son las que resolveríamos antes.</p>
+
+  <div class="tabla tabla--diagnostico">
+    <table>
+      <thead><tr><th scope="col">Problema</th><th scope="col">Consecuencia</th><th scope="col">Prioridad</th><th scope="col">Motivo de la prioridad</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><span class="cod">C2</span> No hay copia de seguridad centralizada ni recuperación probada</th><td>Un disco roto, un robo o un ransomware en una tienda borra sus ventas y clientes sin vuelta atrás.</td><td>{{prioridad:critica}}</td><td>Es el único daño que no se puede deshacer. Todo lo demás es lento o incómodo; esto es perder la empresa.</td></tr>
+        <tr><th scope="row"><span class="cod">C1</span> Ventas, inventario y clientes en ordenadores locales sin sincronizar</th><td>Una tienda no ve el stock de otra, se venden productos que no hay y un cliente no existe para la tienda de al lado.</td><td>{{prioridad:critica}}</td><td>Es el corazón del negocio. Además, al tener los datos en un solo sitio se resuelven a la vez C5 y C6.</td></tr>
+        <tr><th scope="row"><span class="cod">C4</span> Correo de trabajo en cuentas personales</th><td>Si alguien se va, se lleva sus correos y clientes; no se puede quitar el acceso ni imponer seguridad.</td><td>{{prioridad:alta}}</td><td>Es barato y rápido de arreglar y da las cuentas de empresa que necesitan todos los demás servicios.</td></tr>
+        <tr><th scope="row"><span class="cod">C5</span> Técnicos sin historial del cliente ni stock de repuestos</th><td>Visitas repetidas por no llevar la pieza, diagnósticos a ciegas y clientes peor atendidos.</td><td>{{prioridad:alta}}</td><td>Cuesta dinero en cada salida, pero depende de tener antes los datos unificados (C1).</td></tr>
+        <tr><th scope="row"><span class="cod">C6</span> Informes financieros hechos a mano tienda a tienda</th><td>Días de trabajo cada cierre, errores al copiar y decisiones con datos atrasados.</td><td>{{prioridad:media}}</td><td>Molesta pero no frena la venta, y desaparece casi sola al resolver C1.</td></tr>
+        <tr><th scope="row"><span class="cod">C3</span> Web solo informativa, sin compra ni atención automatizada</th><td>Se pierden ventas fuera del horario y clientes que comparan online.</td><td>{{prioridad:media}}</td><td>Es una oportunidad, no un riesgo: abrir la tienda online sin stock unificado vendería lo que no hay.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="primero">
+    <h3>Lo que resolvemos primero</h3>
+    <p><strong>C2, las copias de seguridad,</strong> porque es el único riesgo irreversible y se puede cubrir en semanas, antes incluso de migrar nada. <strong>C1, los datos sin sincronizar,</strong> porque es la base de la que dependen los técnicos, los informes y la tienda online.</p>
+  </div>
+
+  <h3 class="h-bloque">Modelo de despliegue: nube pública</h3>
+  <p>Proponemos <strong>nube pública</strong>: servicios que el proveedor ofrece a muchas empresas sobre su propia infraestructura y que TecnoElectro usa por suscripción. Encaja porque la empresa no tiene informáticos en plantilla, necesita acceso desde tres tiendas y desde la calle, y quiere pagar por uso en lugar de comprar servidores.</p>
+
+  <div class="aviso">
+    <p class="aviso__marca">Atención</p>
+    <p><strong>Nube pública no significa datos públicos.</strong> Lo público es la infraestructura compartida, no la información: cada empresa tiene su espacio aislado, y solo entra quien tiene cuenta, contraseña y doble factor.</p>
+  </div>
+
+  <div class="tabla">
+    <table>
+      <thead><tr><th scope="col">Criterio</th><th scope="col">Nube pública (elegida)</th><th scope="col">Nube privada (alternativa)</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Inversión inicial</th><td>Baja: suscripción mensual por usuario.</td><td>Alta: servidores, licencias y un centro de datos propio o alquilado en exclusiva.</td></tr>
+        <tr><th scope="row">Quién la mantiene</th><td>El proveedor, que actualiza y vigila la infraestructura.</td><td>TecnoElectro, que tendría que contratar o subcontratar informáticos.</td></tr>
+        <tr><th scope="row">Crecer o reducir</th><td>Se añaden o quitan usuarios en minutos.</td><td>Limitado por el hardware comprado.</td></tr>
+        <tr><th scope="row">Control y personalización</th><td>Menor: se adapta la empresa al servicio.</td><td>Total, útil para datos muy sensibles o normativa especial que aquí no se da.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota">Usamos dos proveedores, Odoo y Microsoft. Eso es una <strong>estrategia multinube</strong>, pero el modelo de despliegue sigue siendo nube pública. Tampoco es nube híbrida: los ordenadores de las tiendas quedarán solo como puestos para entrar a los servicios, no como una nube privada conectada.</p>
+</section>
+
+<section class="seccion" id="servicios" data-etapa="Servicios" data-n="3">
+  <h2>Servicios y responsabilidades</h2>
+  <p class="encargo">{{encargo:Gonzalo Redondo}}</p>
+  <p>Dos plataformas SaaS cubren casi todo: <strong>Odoo Online</strong> para la gestión y <strong>Microsoft 365</strong> para correo y cuentas. Una sola base de datos de Odoo resuelve cuatro carencias a la vez. Azure añade dos piezas de apoyo: copias protegidas y sensores.</p>
+
+  <div class="tabla tabla--servicios">
+    <table>
+      <thead><tr><th scope="col">Carencia y solución</th><th scope="col">Producto y proveedor</th><th scope="col">Modelo</th><th scope="col">Gestiona el proveedor</th><th scope="col">Gestiona TecnoElectro</th><th scope="col">Beneficio</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><span class="cod">C1</span> Una sola base de datos de ventas, stock y clientes para las tres tiendas</th><td>Odoo Online: <strong>Punto de venta</strong>, <strong>Inventario</strong> y <strong>CRM</strong> (Odoo S.A.)</td><td>{{modelo:saas}}</td><td>Servidores, actualizaciones, disponibilidad y copia diaria de la base de datos.</td><td>Altas de usuarios y permisos, datos de productos y precios, configuración de las tiendas.</td><td>Las tiendas ven el stock de las otras y venden sin descuadres.</td></tr>
+        <tr><th scope="row"><span class="cod">C2</span> Copias independientes y comprobadas</th><td><strong>Microsoft 365 Backup</strong> (Microsoft) para correo y archivos; <strong>Azure Blob Storage inmutable</strong> (Microsoft) para las copias de Odoo</td><td>{{modelo:saas}} {{modelo:iaas}}</td><td>Guardar las copias y que no se puedan alterar durante el periodo fijado.</td><td>Descargar cada semana la copia de Odoo, decidir cuánto se guarda y hacer las pruebas de restauración.</td><td>La gerencia sabe que puede recuperar los datos, y lo ha comprobado.</td></tr>
+        <tr><th scope="row"><span class="cod">C3</span> Tienda online y chat automatizado con el stock real</th><td>Odoo <strong>Comercio electrónico</strong> y <strong>Live Chat con chatbot</strong> (Odoo S.A.)</td><td>{{modelo:saas}}</td><td>Alojamiento de la web, certificado y plataforma de pago integrada.</td><td>Catálogo, precios, textos del chatbot y atención cuando el chat pasa a una persona.</td><td>Ventas fuera de horario sin vender lo que no hay.</td></tr>
+        <tr><th scope="row"><span class="cod">C4</span> Correo y cuentas de empresa con doble factor</th><td><strong>Microsoft 365 Empresa Básico</strong> (tiendas y técnicos) y <strong>Empresa Estándar</strong> (oficina), con <strong>Microsoft Entra ID</strong></td><td>{{modelo:saas}}</td><td>Correo, filtro antispam, disponibilidad y las opciones de seguridad.</td><td>Crear y dar de baja cuentas, activar el doble factor y decidir quién accede a qué.</td><td>Si alguien se va, la empresa conserva su correo y le quita el acceso en minutos.</td></tr>
+        <tr><th scope="row"><span class="cod">C5</span> Técnicos con historial y repuestos en el móvil</th><td>Odoo <strong>Servicio de campo</strong> (Odoo S.A.), en el navegador del móvil</td><td>{{modelo:saas}}</td><td>La aplicación y que funcione en cualquier dispositivo.</td><td>Asignar avisos, mantener el historial de reparaciones y los móviles de los técnicos.</td><td>El técnico ve qué se le hizo antes al aparato y si hay la pieza; lo que usa se descuenta solo del stock.</td></tr>
+        <tr><th scope="row"><span class="cod">C6</span> Informes consolidados automáticos</th><td>Odoo <strong>Contabilidad</strong> con una cuenta analítica por tienda (Odoo S.A.)</td><td>{{modelo:saas}}</td><td>Cálculo de los informes y su disponibilidad.</td><td>Revisar los datos, cerrar cada mes y decidir qué indicadores mirar.</td><td>El responsable financiero tiene el consolidado al momento, sin copiar datos.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="fuente">Funciones según la documentación oficial de <a href="https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale.html">Odoo Punto de venta</a>, <a href="https://www.odoo.com/documentation/19.0/applications/services/field_service/product_management.html">Servicio de campo</a>, <a href="https://www.odoo.com/documentation/19.0/applications/websites/livechat/chatbots.html">Chatbots</a> y <a href="https://www.odoo.com/documentation/19.0/administration/odoo_online.html">Odoo Online</a>, y de Microsoft: <a href="https://www.microsoft.com/es-es/microsoft-365/business/with-copilot-plans-and-pricing">planes de Microsoft 365</a>, <a href="https://learn.microsoft.com/microsoft-365/backup/backup-overview">Microsoft 365 Backup</a> e <a href="https://learn.microsoft.com/azure/storage/blobs/immutable-storage-overview">almacenamiento inmutable de Azure</a>.</p>
+
+  <div class="dos">
+    <div class="caja">
+      <h3>Por qué encajan con la empresa</h3>
+      <ul>
+        <li><strong>Casi todo es SaaS:</strong> TecnoElectro no tiene informáticos, así que conviene que el proveedor se encargue de servidores y actualizaciones.</li>
+        <li><strong>Una sola base de datos:</strong> tienda, técnicos, web y contabilidad leen y escriben en el mismo Odoo. No hay que integrar programas distintos.</li>
+        <li><strong>Pago por usuario:</strong> el coste crece con la plantilla, no con compras de hardware.</li>
+      </ul>
+    </div>
+    <div class="caja">
+      <h3>Responsabilidad compartida</h3>
+      <p>En SaaS el proveedor se encarga de casi toda la infraestructura, pero hay tres cosas que nunca deja de gestionar la empresa: <strong>sus datos, sus cuentas y quién accede a qué.</strong> Por eso la columna “Gestiona TecnoElectro” nunca está vacía.</p>
+      <p class="fuente">Fuente: <a href="https://learn.microsoft.com/azure/security/fundamentals/shared-responsibility">Microsoft, responsabilidad compartida en la nube</a>.</p>
+    </div>
+  </div>
+
+  <figure class="esquema esquema--accesos" aria-labelledby="esquema-accesos-titulo">
+    <h3 id="esquema-accesos-titulo">Esquema: quién accede y cómo se comparte la información</h3>
+    <div class="accesos">
+      <div class="accesos__col accesos__col--quien">
+        <p class="accesos__etq">Quién entra</p>
+        <div class="actor"><strong>Tienda 1, Valencia</strong>TPV en el navegador</div>
+        <div class="actor"><strong>Tienda 2</strong>TPV en el navegador</div>
+        <div class="actor"><strong>Tienda 3</strong>TPV en el navegador</div>
+        <div class="actor"><strong>6 técnicos</strong>Móvil, por datos móviles</div>
+        <div class="actor"><strong>Responsable financiero</strong>Portátil</div>
+        <div class="actor actor--fuera"><strong>Clientes</strong>Tienda online y chat</div>
+      </div>
+      <div class="accesos__col accesos__col--puerta">
+        <p class="accesos__etq">Cómo entra</p>
+        <div class="puerta"><strong>Cuenta de empresa + doble factor</strong>Microsoft Entra ID y 2FA de Odoo, por internet cifrado (HTTPS)</div>
+      </div>
+      <div class="accesos__col accesos__col--servicios">
+        <p class="accesos__etq">Dónde está la información</p>
+        <div class="servicio servicio--odoo">
+          <strong>Odoo Online, una sola base de datos</strong>
+          <ul><li>Punto de venta</li><li>Inventario de las 3 tiendas</li><li>Clientes y CRM</li><li>Servicio de campo</li><li>Contabilidad</li><li>Web y chat</li></ul>
+        </div>
+        <div class="servicio servicio--m365">
+          <strong>Microsoft 365</strong>
+          <ul><li>Correo</li><li>Teams</li><li>Archivos (OneDrive y SharePoint)</li></ul>
+        </div>
+        <div class="servicio servicio--copias">
+          <strong>Copias protegidas</strong>
+          <ul><li>Microsoft 365 Backup</li><li>Copia semanal de Odoo en Azure inmutable</li></ul>
+        </div>
+      </div>
+    </div>
+    <p class="esquema__nota">Una venta en la tienda 2 descuenta stock en el mismo momento; el técnico lo ve en su móvil y el responsable financiero, en el informe consolidado. Nadie copia datos de un sitio a otro.</p>
+    <figcaption>Esquema de elaboración propia.</figcaption>
+  </figure>
+
+  <div class="sinred">
+    <h3>Si se pierde la conexión</h3>
+    <div class="tabla">
+      <table>
+        <thead><tr><th scope="col">Operación</th><th scope="col">¿Sigue funcionando?</th><th scope="col">Cómo</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Vender en caja</th><td>{{estado:si}}</td><td>El TPV de Odoo sigue funcionando en una sesión ya abierta y envía las ventas al volver la conexión. Lo que no se puede es abrir una sesión nueva sin internet.</td></tr>
+          <tr><th scope="row">Cobrar con tarjeta</th><td>{{estado:si}}</td><td>Con el datáfono del banco, que tiene su propia conexión (supuesto del caso).</td></tr>
+          <tr><th scope="row">Volver a estar en línea</th><td>{{estado:si}}</td><td>Cada tienda tiene un router 4G de respaldo que entra solo si cae la fibra (supuesto).</td></tr>
+          <tr><th scope="row">Consultar stock de otras tiendas</th><td>{{estado:no}}</td><td>Hasta que vuelve la conexión o entra el router 4G.</td></tr>
+          <tr><th scope="row">Correo y archivos</th><td>{{estado:parcial}}</td><td>Se leen los correos ya descargados y los archivos marcados para uso sin conexión.</td></tr>
+          <tr><th scope="row">Alarma de temperatura del almacén</th><td>{{estado:si}}</td><td>La decide un equipo local, sin internet (apartado 4).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fuente">Funcionamiento sin conexión del TPV según la <a href="https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale.html">documentación de Odoo</a> y el <a href="https://www.odoo.com/es/forum/ayuda-1/whats-the-mechanism-of-pos-offline-283217">foro oficial de Odoo</a>.</p>
+  </div>
+  {{foto:tecnico|Para reparar a la primera, el técnico necesita el historial del aparato y la pieza correcta}}
+</section>
+
+<section class="seccion" id="niveles" data-etapa="Edge, fog y mist" data-n="4">
+  <h2>Edge, fog y mist en el almacén</h2>
+  <p class="encargo">{{encargo:Jaime Ramos}}</p>
+  <p>Ampliación del caso: sensores de temperatura en el almacén de repuestos sensibles, como placas electrónicas que se dañan con el calor. Supuesto: un único almacén con cuatro sensores y un límite de 30 °C.</p>
+
+  <figure class="esquema esquema--niveles" aria-labelledby="esquema-niveles-titulo">
+    <h3 id="esquema-niveles-titulo">Recorrido de una lectura de temperatura</h3>
+    <ol class="niveles">
+      <li class="nivel nivel--mist"><span class="nivel__nombre">Mist</span><strong>En el propio sensor</strong><span class="nivel__dato">Lee cada 30 segundos</span><span class="nivel__accion">Solo envía si la temperatura cambia más de 0,5 °C, o una vez cada 15 minutos.</span></li>
+      <li class="nivel nivel--edge"><span class="nivel__nombre">Edge</span><strong>Pasarela en el almacén</strong><span class="nivel__dato">Recibe los 4 sensores por la red local</span><span class="nivel__accion">Si pasan de 30 °C más de 5 minutos, enciende una alarma y avisa en la pantalla del encargado. Funciona sin internet.</span></li>
+      <li class="nivel nivel--fog nivel--opcional"><span class="nivel__nombre">Fog</span><strong>Nodo que coordina varios almacenes</strong><span class="nivel__dato">No lo instalaríamos hoy</span><span class="nivel__accion">Con un solo almacén, la pasarela ya agrupa sus sensores. Tendría sentido si hubiera sensores en las tres tiendas.</span></li>
+      <li class="nivel nivel--cloud"><span class="nivel__nombre">Cloud</span><strong>Azure IoT Hub</strong><span class="nivel__dato">Recibe un resumen cada 15 minutos</span><span class="nivel__accion">Guarda el histórico y genera el informe mensual de temperaturas y alarmas.</span></li>
+    </ol>
+    <figcaption>Esquema de elaboración propia.</figcaption>
+  </figure>
+
+  <div class="tabla">
+    <table>
+      <thead><tr><th scope="col">Nivel</th><th scope="col">Qué dato se procesa</th><th scope="col">Dónde</th><th scope="col">Para qué</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Mist</th><td>La lectura de cada sensor</td><td>En el propio sensor</td><td>Descartar lecturas repetidas y no saturar la red ni la nube.</td></tr>
+        <tr><th scope="row">Edge</th><td>Las lecturas de los cuatro sensores</td><td>Una pasarela junto al almacén</td><td>Avisar al momento aunque no haya internet, que es cuando más importa reaccionar rápido.</td></tr>
+        <tr><th scope="row">Fog</th><td>Datos de varios almacenes o tiendas</td><td>Un nodo intermedio</td><td>Coordinar sitios distintos. Hoy no aporta valor: hay un solo almacén.</td></tr>
+        <tr><th scope="row">Cloud</th><td>Resúmenes y alarmas</td><td>Azure IoT Hub</td><td>Históricos, informe mensual y comprobar si el almacén necesita climatización.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="primero">
+    <h3>Nuestra decisión: tres niveles, no cuatro</h3>
+    <p>Para un almacén con cuatro sensores, la pasarela edge ya hace el trabajo de coordinación que haría el fog. Añadir un nodo más sería un equipo que mantener sin beneficio. Además, el filtrado mist reduce los envíos a unos cien al día, muy por debajo de los 8.000 mensajes diarios del nivel gratuito de Azure IoT Hub.</p>
+    <p class="fuente">Fuentes: <a href="https://learn.microsoft.com/azure/iot-hub/iot-concepts-and-iot-hub">Microsoft, qué es Azure IoT Hub</a> y <a href="https://azure.microsoft.com/en-us/pricing/details/iot-hub/">precios de IoT Hub</a>. Los cien envíos diarios son un cálculo propio con el supuesto de cuatro sensores y un resumen cada 15 minutos.</p>
+  </div>
+  {{foto:almacen|El almacén de repuestos, donde irían los sensores}}
+</section>
+
+<section class="seccion" id="viabilidad" data-etapa="Costes y seguridad" data-n="5">
+  <h2>Viabilidad: costes y seguridad</h2>
+  <p class="encargo">{{encargo:Jaime Ramos}} de los costes y {{encargo-corto:Victor Cerveros}} de la seguridad.</p>
+
+  <h3 class="h-bloque">Situación local frente a la nube</h3>
+  <div class="dos">
+    <div class="caja">
+      <h4>Ventajas para TecnoElectro</h4>
+      <ul>
+        <li>No hay que comprar ni renovar servidores.</li>
+        <li>Datos accesibles desde las tiendas, la calle y la oficina.</li>
+        <li>El proveedor hace copias y actualizaciones.</li>
+      </ul>
+    </div>
+    <div class="caja">
+      <h4>Limitaciones</h4>
+      <ul>
+        <li>Sin internet no hay acceso completo: hace falta un respaldo 4G.</li>
+        <li>El gasto es mensual y no termina nunca.</li>
+        <li>Se depende del proveedor y de sus cambios de precio.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="dos">
+    <div class="caja caja--concepto">
+      <h4>Escalabilidad</h4>
+      <p>Crecer o reducir capacidad de forma planificada. <strong>En el caso:</strong> abrir una cuarta tienda es dar de alta usuarios y un TPV en Odoo, sin comprar un servidor.</p>
+    </div>
+    <div class="caja caja--concepto">
+      <h4>Elasticidad</h4>
+      <p>Que la capacidad se ajuste sola a la demanda del momento. <strong>En el caso:</strong> el pico de visitas a la tienda online en rebajas lo absorbe la infraestructura del proveedor sin que la empresa haga nada.</p>
+    </div>
+  </div>
+  <p class="fuente">Definiciones de <a href="https://azure.microsoft.com/en-us/resources/cloud-computing-dictionary/what-is-cloud-scalability">Microsoft Azure</a> y del <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf">NIST (SP 800-145)</a>.</p>
+
+  <h3 class="h-bloque">Costes</h3>
+  <div class="tabla tabla--costes">
+    <table>
+      <thead><tr><th scope="col">Partida</th><th scope="col">Tipo</th><th scope="col">Hoy, en local</th><th scope="col">Con la nube</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Licencias y suscripciones</th><td>{{tipo:recurrente}}</td><td>Programas comprados por equipo en cada tienda.</td><td>Odoo Estándar: 22 usuarios × 14,90 € = <strong>327,80 €/mes</strong> (11,90 € el primer año). Microsoft 365: 18 × 6,07 € + 4 × 20,36 € = <strong>190,70 €/mes</strong>. Sin IVA.</td></tr>
+        <tr><th scope="row">Migración e implantación</th><td>{{tipo:inicial}}</td><td>No aplica.</td><td>Un partner de Odoo configura y carga los datos de las tres tiendas. Unos 6.000 € <span class="supuesto">supuesto</span>.</td></tr>
+        <tr><th scope="row">Formación</th><td>{{tipo:inicial}}</td><td>No aplica.</td><td>Dos sesiones por tienda y una para técnicos y oficina, en horario de trabajo.</td></tr>
+        <tr><th scope="row">Equipos y mantenimiento</th><td>{{tipo:ambos}}</td><td>Renovar y reparar los ordenadores de cada tienda; nadie se encarga de las copias.</td><td>Un router 4G de respaldo por tienda (inicial). El mantenimiento de servidores lo asume el proveedor.</td></tr>
+        <tr><th scope="row">Almacenamiento de copias</th><td>{{tipo:recurrente}}</td><td>No hay copia centralizada.</td><td>Microsoft 365 Backup a 0,15 $ por GiB y mes: unos 45 $/mes para 300 GiB <span class="supuesto">volumen supuesto</span>. Restaurar es gratis.</td></tr>
+        <tr><th scope="row">Transferencia de datos</th><td>{{tipo:recurrente}}</td><td>No aplica.</td><td>Descargar datos desde Azure se paga por volumen. Por eso las copias de Odoo se suben, que es gratis, y solo se descargan para restaurar.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="fuente">Precios consultados el 8 de noviembre de 2026: <a href="https://www.microsoft.com/es-es/microsoft-365/business/with-copilot-plans-and-pricing">Microsoft 365 para empresas</a> (pago anual, sin IVA) y <a href="https://learn.microsoft.com/microsoft-365/backup/backup-overview">Microsoft 365 Backup</a>. Odoo según <a href="https://www.guiadesoftware.com/blog/cuanto-cuesta-odoo">GuiaDeSoftware (2026)</a>, que los tomó de la web de Odoo; no pudimos abrir la página de precios oficial. El reparto de usuarios es un supuesto.</p>
+  <p class="nota-clave">La nube no es automáticamente más barata: unos 520 € al mes en suscripciones son más de 6.000 € al año. Lo que se gana es no comprar servidores, no perder datos y dejar de dedicar días a consolidar informes.</p>
+
+  <div class="dos">
+    <div class="caja caja--medida">
+      <h4>Control del gasto 1: presupuesto con alertas</h4>
+      <p>Un presupuesto mensual en Azure con avisos al 80 % y al 100 %, tanto del gasto real como del previsto. <strong>Ojo:</strong> la alerta avisa pero no detiene el consumo; el responsable financiero tiene que revisarla y actuar.</p>
+    </div>
+    <div class="caja caja--medida">
+      <h4>Control del gasto 2: revisión trimestral de licencias</h4>
+      <p>Cada tres meses se dan de baja los usuarios que ya no están, se baja de plan a quien no usa las aplicaciones de escritorio y se ajusta cuánto tiempo se guardan las copias.</p>
+    </div>
+  </div>
+  <p class="fuente">Fuente: <a href="https://learn.microsoft.com/azure/cost-management-billing/costs/tutorial-acm-create-budgets">Microsoft, crear y gestionar presupuestos</a>: “Resources aren’t affected, and your consumption isn’t stopped”.</p>
+
+  <h3 class="h-bloque">Riesgos y medidas</h3>
+  <div class="tabla tabla--riesgos">
+    <table>
+      <thead><tr><th scope="col">Riesgo</th><th scope="col">Medida</th><th scope="col">Qué hace TecnoElectro</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Robo de cuentas</th><td>Doble factor obligatorio con los valores de seguridad predeterminados de Microsoft Entra ID, gratuitos, y 2FA en Odoo.</td><td>Activarlo antes de migrar, formar contra el phishing y revisar los inicios de sesión sospechosos.</td></tr>
+        <tr><th scope="row">Permisos excesivos</th><td>Mínimo privilegio: cada rol ve solo lo suyo. Un vendedor no entra en contabilidad; un técnico, solo en sus avisos.</td><td>Solo dos administradores, revisión trimestral de permisos y baja el mismo día en que alguien se va.</td></tr>
+        <tr><th scope="row">Pérdida o borrado de datos</th><td>Regla 3-2-1: los datos en Odoo, su copia diaria en Odoo y una copia semanal en Azure inmutable que nadie puede borrar en 30 días. Microsoft 365 Backup para correo y archivos.</td><td>Descargar la copia semanal, guardarla y hacer las pruebas de restauración.</td></tr>
+        <tr><th scope="row">Caída del servicio o de internet</th><td>Router 4G de respaldo, TPV que vende sin conexión y datáfono independiente.</td><td>Tener un procedimiento escrito para trabajar sin sistema y probarlo una vez al año.</td></tr>
+        <tr><th scope="row">Dependencia del proveedor</th><td>Copia completa descargable y datos en formatos que se pueden exportar.</td><td>Revisar en el contrato cómo se recuperan los datos si se deja el servicio.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="fuente">Fuentes: <a href="https://learn.microsoft.com/entra/fundamentals/security-defaults">Microsoft, valores de seguridad predeterminados</a>, <a href="https://www.odoo.com/documentation/19.0/applications/general/users/2fa.html">Odoo, autenticación de dos factores</a>, <a href="https://www.odoo.com/documentation/19.0/administration/odoo_online.html">Odoo Online, copias y duplicados</a> y <a href="https://learn.microsoft.com/azure/storage/blobs/immutable-storage-overview">Azure, almacenamiento inmutable</a>.</p>
+
+  <div class="dos">
+    <div class="caja caja--prueba">
+      <h4>Cómo comprobamos que una copia se puede restaurar</h4>
+      <ol>
+        <li>Cada trimestre se restaura la última copia de Odoo en una base de datos duplicada de prueba, que no envía correos ni cobros.</li>
+        <li>Se comparan las ventas y el stock del último día con los de la base real.</li>
+        <li>Se recupera un archivo y un buzón de prueba desde Microsoft 365 Backup.</li>
+        <li>Se anota cuánto tardó y si faltó algo. Una copia que nunca se ha restaurado no cuenta como copia.</li>
+      </ol>
+    </div>
+    <div class="caja caja--aviso">
+      <h4>Sincronizar no es hacer copia</h4>
+      <p>OneDrive sincroniza: si alguien borra un archivo o un ransomware lo cifra, el cambio se copia a todos los dispositivos. Una copia de seguridad es una versión separada y antigua que se conserva aunque el original cambie. Por eso hacen falta las dos cosas.</p>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" id="migracion" data-etapa="Migración" data-n="6">
+  <h2>Migración progresiva y resultado esperado</h2>
+  <p class="encargo">{{encargo:Victor Cerveros}}</p>
+  <p>Tres fases. Ninguna empieza hasta que la anterior pasa su comprobación, y las tiendas siguen vendiendo durante todo el proceso.</p>
+
+  <ol class="fases">
+    <li class="fase">
+      <p class="fase__n">Fase 1 <span>meses 1 y 2</span></p>
+      <h3>Cuentas y copias</h3>
+      <dl>
+        <div><dt>Qué se traslada</dt><dd>Correo a Microsoft 365 con doble factor. Primera copia de los datos de los ordenadores de cada tienda a Azure.</dd></div>
+        <div><dt>Responsable</dt><dd>Gerente, con el apoyo del partner.</dd></div>
+        <div><dt>Para avanzar</dt><dd>Todas las cuentas con doble factor y una restauración de prueba correcta.</dd></div>
+      </dl>
+    </li>
+    <li class="fase fase--piloto">
+      <p class="fase__n">Fase 2 <span>meses 3 y 4</span></p>
+      <h3>Piloto en la tienda 1</h3>
+      <dl>
+        <div><dt>Qué se traslada</dt><dd>Productos y clientes de las tres tiendas a Odoo. La tienda 1 vende ya con el TPV de Odoo; las otras dos siguen como hoy.</dd></div>
+        <div><dt>Responsable</dt><dd>Encargado de la tienda 1.</dd></div>
+        <div><dt>Para avanzar</dt><dd>Dos semanas seguidas en las que la caja y el stock de Odoo cuadran con el recuento físico.</dd></div>
+      </dl>
+    </li>
+    <li class="fase">
+      <p class="fase__n">Fase 3 <span>meses 5 a 7</span></p>
+      <h3>Ampliación</h3>
+      <dl>
+        <div><dt>Qué se traslada</dt><dd>Tiendas 2 y 3, técnicos con Servicio de campo, contabilidad consolidada y, al final, tienda online con chat y sensores.</dd></div>
+        <div><dt>Responsable</dt><dd>Responsable financiero y jefe de técnicos.</dd></div>
+        <div><dt>Para terminar</dt><dd>Un cierre mensual completo hecho solo desde Odoo. Después se retiran los programas locales.</dd></div>
+      </dl>
+    </li>
+  </ol>
+
+  <div class="aviso">
+    <p class="aviso__marca">Plan de vuelta atrás</p>
+    <p>Durante el piloto, el programa local de la tienda 1 sigue instalado y se exportan sus datos cada noche. Si Odoo falla, la tienda vuelve a su sistema anterior ese mismo día y las ventas del piloto se cargan después desde Odoo.</p>
+  </div>
+
+  <h3 class="h-bloque">Tres mejoras que se podrán comprobar</h3>
+  <div class="tabla tabla--mejoras">
+    <table>
+      <thead><tr><th scope="col">Mejora</th><th scope="col">Indicador</th><th scope="col">Hoy <span class="supuesto">supuesto</span></th><th scope="col">Objetivo</th><th scope="col">Cómo se comprueba</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Informes sin copiar datos</th><td>Tiempo para consolidar las ventas del mes</td><td class="num">2 días</td><td class="num meta">Menos de 1 hora</td><td>Cronometrar el primer cierre tras la fase 3.</td></tr>
+        <tr><th scope="row">Stock visible para todos</th><td>Consultar el stock de otra tienda o desde la calle</td><td class="num">No es posible</td><td class="num meta">En tiempo real</td><td>Un técnico consulta una pieza desde su ruta y una tienda vende con stock de otra.</td></tr>
+        <tr><th scope="row">Datos que se pueden recuperar</th><td>Tiempo para restaurar la base de datos desde una copia</td><td class="num">Nunca probado</td><td class="num meta">Menos de 4 horas</td><td>El simulacro trimestral de restauración.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota">Los objetivos son metas del plan, no resultados obtenidos.</p>
+</section>
+
+<section class="seccion" id="fuentes" data-etapa="Fuentes" data-n="7">
+  <h2>Fuentes, equipo y uso de IA</h2>
+
+  <h3 class="h-sub">Quién se encarga de cada parte</h3>
+  {{reparto}}
+
+  <h3 class="h-sub">Uso de inteligencia artificial</h3>
+  <p class="ia">Hemos usado un asistente de IA para buscar y resumir fuentes, proponer la estructura, redactar borradores de los textos y programar la web. Los datos de servicios y precios llevan enlace a su fuente oficial; los de TecnoElectro son supuestos del equipo y están marcados como tales.</p>
+
+  <h3 class="h-sub">Fuentes consultadas</h3>
+  <p class="nota">Todas consultadas el 8 de noviembre de 2026.</p>
+  <ol class="refs">
+    <li>Apuntes de la UD3, Computación en la nube.</li>
+    <li>Odoo S.A. <a href="https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale.html">Point of Sale</a>, documentación oficial de Odoo 19.</li>
+    <li>Odoo S.A. <a href="https://www.odoo.com/documentation/19.0/administration/odoo_online.html">Odoo Online database management</a>, documentación oficial.</li>
+    <li>Odoo S.A. <a href="https://www.odoo.com/documentation/19.0/applications/services/field_service/product_management.html">Field Service: product management</a>, documentación oficial.</li>
+    <li>Odoo S.A. <a href="https://www.odoo.com/documentation/19.0/applications/websites/livechat/chatbots.html">Chatbots</a> y <a href="https://www.odoo.com/documentation/19.0/applications/websites/ecommerce.html">eCommerce</a>, documentación oficial.</li>
+    <li>Odoo S.A. <a href="https://www.odoo.com/documentation/19.0/applications/general/users/2fa.html">Two-factor authentication</a>, documentación oficial.</li>
+    <li>Odoo S.A. <a href="https://www.odoo.com/es/forum/ayuda-1/whats-the-mechanism-of-pos-offline-283217">What’s the mechanism of POS offline</a>, foro oficial.</li>
+    <li>Microsoft. <a href="https://www.microsoft.com/es-es/microsoft-365/business/with-copilot-plans-and-pricing">Planes y precios de Microsoft 365 para empresas</a>.</li>
+    <li>Microsoft. <a href="https://learn.microsoft.com/entra/fundamentals/security-defaults">Security defaults in Microsoft Entra ID</a>.</li>
+    <li>Microsoft. <a href="https://learn.microsoft.com/azure/security/fundamentals/shared-responsibility">Shared responsibility in the cloud</a>.</li>
+    <li>Microsoft. <a href="https://learn.microsoft.com/microsoft-365/backup/backup-overview">Overview of Microsoft 365 Backup</a>.</li>
+    <li>Microsoft. <a href="https://learn.microsoft.com/azure/storage/blobs/immutable-storage-overview">Immutable storage for Azure Blob Storage</a>.</li>
+    <li>Microsoft. <a href="https://learn.microsoft.com/azure/cost-management-billing/costs/tutorial-acm-create-budgets">Create and manage budgets</a>.</li>
+    <li>Microsoft. <a href="https://learn.microsoft.com/azure/iot-hub/iot-concepts-and-iot-hub">What is Azure IoT Hub?</a> y <a href="https://azure.microsoft.com/en-us/pricing/details/iot-hub/">precios de IoT Hub</a>.</li>
+    <li>Microsoft Azure. <a href="https://azure.microsoft.com/en-us/resources/cloud-computing-dictionary/what-is-cloud-scalability">What is cloud scalability?</a></li>
+    <li>NIST (2011). <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf">The NIST Definition of Cloud Computing, SP 800-145</a>.</li>
+    <li>GuiaDeSoftware (2026). <a href="https://www.guiadesoftware.com/blog/cuanto-cuesta-odoo">Los precios oficiales de Odoo en 2026</a>.</li>
+  </ol>
+  {{creditos}}
+</section>
